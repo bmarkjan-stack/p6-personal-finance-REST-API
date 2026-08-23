@@ -1,3 +1,10 @@
+# Personal Finance REST API
+
+A RESTful backend API built with Python and Flask for managing personal income and expenses.
+
+This project demonstrates backend development, REST API architecture, authentication, database integration, input validation, error handling, and automated testing.
+
+
 ## Project Structure
 
 ```text
