@@ -120,3 +120,29 @@ def update_transaction(transaction_id):
         "message": "Transaction updated successfully.",
         "transaction": transaction.to_dict()
     }), 200
+
+@transactions_bp.delete("/<int:transaction_id>")
+@jwt_required()
+def delete_transaction(transaction_id):
+    user_id = int(get_jwt_identity())
+
+    transaction = (
+        Transaction.query
+        .filter_by(
+            id=transaction_id,
+            user_id=user_id
+        )
+        .first()
+    )
+
+    if not transaction:
+        return jsonify({
+            "error": "Transaction not found."
+        }), 404
+
+    db.session.delete(transaction)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Transaction deleted successfully."
+    }), 200
