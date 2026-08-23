@@ -1,3 +1,5 @@
+## Project Structure
+
 ```text
 personal-finance-api/
 ├── app/
