@@ -80,3 +80,43 @@ def get_transaction(transaction_id):
     return jsonify({
         "transaction": transaction.to_dict()
     }), 200
+
+@transactions_bp.put("/<int:transaction_id>")
+@jwt_required()
+def update_transaction(transaction_id):
+    user_id = int(get_jwt_identity())
+
+    transaction = (
+        Transaction.query
+        .filter_by(
+            id=transaction_id,
+            user_id=user_id
+        )
+        .first()
+    )
+
+    if not transaction:
+        return jsonify({
+            "error": "Transaction not found."
+        }), 404
+
+    data = request.get_json(silent=True)
+    errors = validate_transaction(data)
+
+    if errors:
+        return jsonify({
+            "error": "Validation failed.",
+            "details": errors
+        }), 400
+
+    transaction.description = data["description"].strip()
+    transaction.amount = float(data["amount"])
+    transaction.category = data["category"].strip()
+    transaction.type = data["type"]
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Transaction updated successfully.",
+        "transaction": transaction.to_dict()
+    }), 200
