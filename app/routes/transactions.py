@@ -57,3 +57,26 @@ def get_transactions():
             for transaction in transactions
         ]
     }), 200
+
+@transactions_bp.get("/<int:transaction_id>")
+@jwt_required()
+def get_transaction(transaction_id):
+    user_id = int(get_jwt_identity())
+
+    transaction = (
+        Transaction.query
+        .filter_by(
+            id=transaction_id,
+            user_id=user_id
+        )
+        .first()
+    )
+
+    if not transaction:
+        return jsonify({
+            "error": "Transaction not found."
+        }), 404
+
+    return jsonify({
+        "transaction": transaction.to_dict()
+    }), 200
