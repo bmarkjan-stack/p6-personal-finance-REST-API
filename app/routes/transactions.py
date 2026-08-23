@@ -37,3 +37,23 @@ def create_transaction():
         "message": "Transaction created successfully.",
         "transaction": transaction.to_dict()
     }), 201
+
+@transactions_bp.get("")
+@jwt_required()
+def get_transactions():
+    user_id = int(get_jwt_identity())
+
+    transactions = (
+        Transaction.query
+        .filter_by(user_id=user_id)
+        .order_by(Transaction.created_at.desc())
+        .all()
+    )
+
+    return jsonify({
+        "count": len(transactions),
+        "transactions": [
+            transaction.to_dict()
+            for transaction in transactions
+        ]
+    }), 200
