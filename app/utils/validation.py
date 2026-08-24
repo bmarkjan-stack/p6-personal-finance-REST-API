@@ -1,3 +1,6 @@
+from datetime import date as date_type
+from datetime import datetime
+
 ALLOWED_TRANSACTION_TYPES = {
     "income",
     "expense"
@@ -16,6 +19,7 @@ def validate_transaction(data):
     amount = data.get("amount")
     category = data.get("category")
     transaction_type = data.get("type")
+    transaction_date = data.get("date")
 
     if not description:
         errors["description"] = "Description is required."
@@ -49,5 +53,18 @@ def validate_transaction(data):
         errors["type"] = (
             "Type must be either 'income' or 'expense'."
         )
+
+    if not transaction_date:
+        errors["date"] = "Date is required."
+    else:
+        try:
+            datetime.strptime(
+                transaction_date,
+                "%Y-%m-%d"
+            )
+        except ValueError:
+            errors["date"] = (
+                "Date must use YYYY-MM-DD format."
+            )
 
     return errors

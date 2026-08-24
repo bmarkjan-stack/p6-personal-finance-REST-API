@@ -3,6 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..utils.validation import validate_transaction
 from ..models import Transaction
 from ..extensions import db
+from datetime import datetime
 
 transactions_bp = Blueprint(
     "transactions",
@@ -27,6 +28,10 @@ def create_transaction():
         amount=float(data["amount"]),
         category=data["category"].strip(),
         type=data["type"],
+        date=datetime.strptime(
+            data["date"],
+            "%Y-%m-%d"
+        ).date(),
         user_id=user_id
     )
 
@@ -113,6 +118,10 @@ def update_transaction(transaction_id):
     transaction.amount = float(data["amount"])
     transaction.category = data["category"].strip()
     transaction.type = data["type"]
+    transaction.date = datetime.strptime(
+        data["date"],
+        "%Y-%m-%d"
+    ).date()
 
     db.session.commit()
 

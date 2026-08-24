@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from werkzeug.security import check_password_hash, generate_password_hash
 from .extensions import db
 
@@ -77,6 +77,11 @@ class Transaction(db.Model):
         nullable=False
     )
 
+    date = db.Column(
+        db.Date,
+        nullable=False
+    )
+
     category = db.Column(
         db.String(100),
         nullable=False
@@ -89,7 +94,7 @@ class Transaction(db.Model):
 
     created_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
+        default=datetime.now(timezone.utc),
         nullable=False
     )
 
@@ -106,6 +111,7 @@ class Transaction(db.Model):
             "amount": self.amount,
             "category": self.category,
             "type": self.type,
+            "date": self.date.isoformat(),
             "created_at": self.created_at.isoformat(),
             "user_id": self.user_id
         }
