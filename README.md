@@ -4,6 +4,35 @@ A RESTful backend API built with Python and Flask for managing personal income a
 
 This project demonstrates backend development, REST API architecture, authentication, database integration, input validation, error handling, and automated testing.
 
+## Features
+
+- User registration
+- User login
+- JWT authentication
+- Create transactions
+- Read transactions
+- Update transactions
+- Delete transactions
+- SQLite database
+- SQLAlchemy ORM
+- Input validation
+- JSON responses
+- HTTP status codes
+- Error handling
+- User-specific transactions
+- Automated tests
+- CORS support
+
+## Technologies
+
+- Python
+- Flask
+- Flask-SQLAlchemy
+- SQLite
+- Flask-JWT-Extended
+- Flask-CORS
+- pytest
+- python-dotenv
 
 ## Project Structure
 
