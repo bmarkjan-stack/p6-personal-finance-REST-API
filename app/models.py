@@ -3,6 +3,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from .extensions import db
 
 
+def utc_now():
+    return datetime.now(timezone.utc)
+
+
 class User(db.Model):
     __tablename__ = "users"
 
@@ -30,7 +34,7 @@ class User(db.Model):
 
     created_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
+        default=utc_now,
         nullable=False
     )
 
@@ -94,7 +98,7 @@ class Transaction(db.Model):
 
     created_at = db.Column(
         db.DateTime,
-        default=datetime.now(timezone.utc),
+        default=utc_now,
         nullable=False
     )
 

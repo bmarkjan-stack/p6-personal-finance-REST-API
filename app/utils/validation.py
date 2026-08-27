@@ -1,5 +1,5 @@
-from datetime import date as date_type
 from datetime import datetime
+
 
 ALLOWED_TRANSACTION_TYPES = {
     "income",
@@ -56,6 +56,8 @@ def validate_transaction(data):
 
     if not transaction_date:
         errors["date"] = "Date is required."
+    elif not isinstance(transaction_date, str):
+        errors["date"] = "Date must use YYYY-MM-DD format."
     else:
         try:
             datetime.strptime(
